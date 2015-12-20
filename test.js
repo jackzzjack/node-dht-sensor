@@ -3,11 +3,23 @@
 
 var fs = require('fs');
 var sensorLib = require('./build/Release/node-dht-sensor');
+var Process = require('process');
+
+var usage = 'Usage: node test.js [SENSOR_TYPE] [GPIO_PIN]';
+
+console.log(Process.argv.length);
+
+if (Process.argv.length != 4) {
+    console.warn(usage);
+
+    Process.exit(1);
+}
 
 var sensor = {
   initialize: function() {
     this.totalReads = 0;
-    return sensorLib.initialize(22, 17);
+    return sensorLib.initialize(parseInt(Process.argv[2], 10)
+		              , parseInt(Process.argv[3], 10));
   },
 
   read: function() {
